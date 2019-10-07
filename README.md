@@ -27,8 +27,9 @@ The code in this repository is currently under active development, and may there
    
 ## Reference
 
-If you use our code, please 
+If you use our code, please cite [our paper](https://arxiv.org/abs/1909.06677).
 
+```
 @misc{marx2019predictive,
     title={Predictive Multiplicity in Classification},
     author={Charles T. Marx and Flavio du Pin Calmon and Berk Ustun},
@@ -37,3 +38,4 @@ If you use our code, please
     archivePrefix={arXiv},
     primaryClass={cs.LG}
 }
+```
