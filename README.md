@@ -23,9 +23,7 @@ If you have problems installing CPLEX, check the [CPLEX user manual](http://www-
  
 ## Usage
 
-1. Preprocess the dataset you wish to use (a csv file in the `data` directory) by running `scripts/ex_create_dataset_files.py` to generate the pickle file for the data. 
-2. For MIP solutions: Run `scripts/ex_solve_mip.py`, specifying the name of your dataset. 
-3. For glmnet solutions: Run `scripts/ex_glmnet_cv.py`, specifying the name of your dataset. 
+1. Example usage can be found in the `example.py` file. 
  
 ## Development
 

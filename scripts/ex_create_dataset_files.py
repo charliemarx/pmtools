@@ -4,7 +4,7 @@ from eqm.cross_validation import generate_stratified_cvindices
 import numpy as np
 
 
-def create_dataset_file(data_name):
+def create_dataset_file(data_name, test=False):
     ## load data from disk
     data_file_name = '%s/%s_processed.csv' % (data_dir, data_name)
     data_file_name = Path(data_file_name)
@@ -13,6 +13,11 @@ def create_dataset_file(data_name):
 
     # load dataset
     data = load_data_from_csv(data_file_name)
+
+    if test:
+        data['X'] = data['X'][:500]
+        data['Y'] = data['Y'][:500]
+        data['sample_weights'] = data['sample_weights'][:500]
 
     # correct for class imbalance
     data = oversample_minority_class(data, random_state = random_seed)
@@ -37,7 +42,11 @@ def create_dataset_file(data_name):
 
     # todo: sanity check that stratified sampling works (# of Y = +1 ~= # Y = -1 within fold)
     #save data and cv indices to disk
-    save_data(file_name = data_file_name.with_suffix('.pickle'),
+    if test:
+        outfile = '%s/%s_small_processed.pickle' % (data_dir, data_name)
+    else:
+        outfile = data_file_name.with_suffix('.pickle')
+    save_data(file_name = outfile,
               data = data,
               cvindices = cvindices,
               overwrite = True,
@@ -47,4 +56,4 @@ def create_dataset_file(data_name):
     print('data_name: %s saved' % data_name)
 
 if __name__ == "__main__":
-    create_dataset_file("compas_arrest")
+    create_dataset_file("compas_arrest", test=True)
