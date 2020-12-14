@@ -23,7 +23,7 @@ If you have problems installing CPLEX, check the [CPLEX user manual](http://www-
  
 ## Usage
 
-1. Example usage can be found in the `example.py` file. 
+Example usage can be found in the `example.py` file. 
  
 ## Development
 
