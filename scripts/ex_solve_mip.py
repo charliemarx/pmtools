@@ -15,14 +15,14 @@ np.set_printoptions(precision = 2)
 np.set_printoptions(suppress = True)
 
 # dashboard
-data_name = 'test_compas_arrest'
+data_name = 'compas_arrest'
 random_seed = 1337
 time_limit_global = 60
 time_limit_instance = 60
 initialize_mip = True
 custom_mip_params = True
 search_global_equivalent = False
-max_iterations = 1e8  #shorten loop during development
+max_iterations = 2  #shorten loop during development
 fold_id = 'K01N01'
 fold_num = 1
 
@@ -148,7 +148,7 @@ csv_df['model_type'] = 'flipped'
 
 # get alternative models
 alt_df = pool.get_df()
-alt_df = alt_df[['objval', 'lowerbound', 'coefs']]
+alt_df = alt_df[['objval', 'lowerbound', 'coefficients']]
 alt_df.columns = ['upperbound', 'lowerbound', 'coefficients']
 alt_df['model_type'] = 'alternative'
 
@@ -169,7 +169,7 @@ csv_df = csv_df.drop('coefficients', axis=1)
 
 # add additional info
 csv_df['train_acc'] = acc_from_coefs(W, data['X'], data['Y'])
-csv_df['validation_acc'] = acc_from_coefs(W, data['X_validation'], data['Y_validation'])
+# csv_df['validation_acc'] = acc_from_coefs(W, data['X_validation'], data['Y_validation'])
 csv_df['data_name'] = data_name
 csv_df['fold_id'] = fold_id
 csv_df['n_points'] = n_points

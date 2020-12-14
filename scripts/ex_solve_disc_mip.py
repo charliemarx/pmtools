@@ -8,7 +8,7 @@ np.set_printoptions(suppress = True)
 
 # dashboard
 info = {
-    'data_name': 'pretrial_CA_arrest',
+    'data_name': 'compas_arrest',
     'random_seed': 1337,
     'fold_id': 'K05N01',
     'fold_num': 0,
@@ -27,6 +27,7 @@ baseline_file_name = output_dir / get_baseline_file_name(info)
 
 # load baseline file
 assert baseline_file_name.exists()
+
 with open(baseline_file_name, 'rb') as infile:
     baseline_results = dill.load(infile)
 print_log('loaded baseline file %s' % baseline_file_name)

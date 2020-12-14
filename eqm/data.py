@@ -932,7 +932,7 @@ def oversample_minority_class(data, **kwargs):
         minority_label, majority_label = -1, 1
 
     # oversample minority class
-    ros = RandomOverRandomOverSampler(ratio = 'all', **kwargs)
+    ros = RandomOverSampler(**kwargs)
     Xs, Ys = ros.fit_sample(X, Y)
 
     # double check sampling

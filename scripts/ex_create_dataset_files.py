@@ -3,52 +3,48 @@ from eqm.data import *
 from eqm.cross_validation import generate_stratified_cvindices
 import numpy as np
 
-## load data from disk
-data_name = 'recidivism_NY_domestic_violence'
-data_file_name = '%s/%s_processed.csv' % (data_dir, data_name)
-data_file_name = Path(data_file_name)
-random_seed = 1337
-np.random.seed(seed = random_seed)
 
-# load dataset
-data = load_data_from_csv(data_file_name)
+def create_dataset_file(data_name):
+    ## load data from disk
+    data_file_name = '%s/%s_processed.csv' % (data_dir, data_name)
+    data_file_name = Path(data_file_name)
+    random_seed = 1337
+    np.random.seed(seed = random_seed)
 
-# correct for class imbalance
-data = oversample_minority_class(data, random_state = random_seed)
+    # load dataset
+    data = load_data_from_csv(data_file_name)
 
-# if row_id in data, save to disk then drop from data
-if "recidivism_" in data_name or "pretrial_" in data_name:
-    # the file where we will save the row_ids
-    row_id_name = data_dir / ('%s_row_id' % data_name)
+    # correct for class imbalance
+    data = oversample_minority_class(data, random_state = random_seed)
 
-    idx = get_index_of(data, 'row_id')
-    row_id = data['X'][:, idx]
-    np.savetxt(fname=row_id_name.with_suffix('.csv'), X=row_id, delimiter=',', header='row_id')
-    data = remove_variable(data, "row_id")
+    # if row_id in data, save to disk then drop from data
+    if "recidivism_" in data_name or "pretrial_" in data_name:
+        # the file where we will save the row_ids
+        row_id_name = data_dir / ('%s_row_id' % data_name)
 
-# generate cv indices
-cvindices = generate_stratified_cvindices(X = data['X'],
-                                          strata = data['Y'],
-                                          total_folds_for_cv = [1, 3, 4, 5],
-                                          total_folds_for_inner_cv = [5],
-                                          replicates = 3,
-                                          seed = random_seed)
+        idx = get_index_of(data, 'row_id')
+        row_id = data['X'][:, idx]
+        np.savetxt(fname=row_id_name.with_suffix('.csv'), X=row_id, delimiter=',', header='row_id')
+        data = remove_variable(data, "row_id")
 
-# todo: sanity check that stratified sampling works (# of Y = +1 ~= # Y = -1 within fold)
+    # generate cv indices
+    cvindices = generate_stratified_cvindices(X = data['X'],
+                                              strata = data['Y'],
+                                              total_folds_for_cv = [1, 3, 4, 5],
+                                              total_folds_for_inner_cv = [5],
+                                              replicates = 3,
+                                              seed = random_seed)
 
-#save data and cv indices to disk
-save_data(file_name = data_file_name.with_suffix('.pickle'),
-          data = data,
-          cvindices = cvindices,
-          overwrite = True,
-          stratified = True,
-          check_save = True)
+    # todo: sanity check that stratified sampling works (# of Y = +1 ~= # Y = -1 within fold)
+    #save data and cv indices to disk
+    save_data(file_name = data_file_name.with_suffix('.pickle'),
+              data = data,
+              cvindices = cvindices,
+              overwrite = True,
+              stratified = True,
+              check_save = True)
 
-# save_data(file_name = data_file_name.with_suffix('.RData'),
-#           data = data,
-#           cvindices = cvindices,
-#           overwrite = True,
-#           stratified = True,
-#           check_save = True)
+    print('data_name: %s saved' % data_name)
 
-print('data_name: %s saved' % data_name)
+if __name__ == "__main__":
+    create_dataset_file("compas_arrest")
